@@ -434,10 +434,13 @@ public class PDFStreamEngine
             // applying word spacing to either the non-32 space or to the character
             // code 32 non-space resulted in errors consistent with this interpretation.
             //
+            float _characterHorizontalDisplacementText = characterHorizontalDisplacementText;
+
             float spacingText = 0;
             if( (string[i] == 0x20) && codeLength == 1 )
             {
                 spacingText += wordSpacingText;
+                _characterHorizontalDisplacementText = wordSpacingText;
             }
             textXctm = textMatrix.multiply(ctm, textXctm);
             // Convert textMatrix to display units
@@ -446,7 +449,7 @@ public class PDFStreamEngine
             
             // TODO : tx should be set for horizontal text and ty for vertical text
             // which seems to be specified in the font (not the direction in the matrix).
-            float tx = ((characterHorizontalDisplacementText)*fontSizeText)*horizontalScalingText;
+            float tx = ((_characterHorizontalDisplacementText)*fontSizeText)*horizontalScalingText;
             float ty = 0;
             // reset the matrix instead of creating a new one
             td.reset();
@@ -711,3 +714,4 @@ public class PDFStreamEngine
     }
     
 }
+

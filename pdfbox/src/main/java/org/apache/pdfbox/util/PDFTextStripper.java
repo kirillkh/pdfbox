@@ -925,6 +925,9 @@ public class PDFTextStripper extends PDFStreamEngine
             }
         }
 
+        showCharacter = showCharacter &&
+                        !(" ".equals(text.getCharacter()) && text.getWidthDirAdj()==0);
+
         if( showCharacter )
         {
             //if we are showing the character then we need to determine which
@@ -1838,13 +1841,7 @@ public class PDFTextStripper extends PDFStreamEngine
         StringBuilder lineBuilder = new StringBuilder();
         for(TextPosition text : line){
             if (text instanceof WordSeparator) {
-                String lineStr = lineBuilder.toString();
-                if (hasRtl) {
-                    lineStr = normalize.makeLineLogicalOrder(lineStr,isRtlDominant);
-                }
-                lineStr = normalize.normalizePres(lineStr);
-                normalized.add(lineStr);
-                lineBuilder = new StringBuilder();
+                lineBuilder.append(" ");
             }
             else {
                 lineBuilder.append(text.getCharacter());
